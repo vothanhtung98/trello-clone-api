@@ -2,11 +2,28 @@ import { BoardModel } from '*/models/board.model'
 
 const createNew = async (data) => {
     try {
-        const result = await BoardModel.createNew(data)
-        return result
+        const createdBoard = await BoardModel.createNew(data)
+        const newBoard = await BoardModel.findOneById(createdBoard.insertedId)
+        return newBoard
     } catch (error) {
         throw new Error(error)
     }
 }
 
-export const BoardService = { createNew }
+const getFullBoard = async (boardId) => {
+    try {
+        const board = await BoardModel.getFullBoard(boardId)
+
+        // Move card to right column
+        board.columns.forEach(column =>
+            column.cards = board.cards.filter(card => card.columnId.toString() === column._id.toString())
+        )
+        // Remove cards data after move to column
+        delete board.cards
+        return board
+    } catch (error) {
+        throw new Error(error)
+    }
+}
+
+export const BoardService = { createNew, getFullBoard }
