@@ -14,7 +14,7 @@ const columnCollectionSchema = Joi.object({
 })
 
 const validateSchema = async (data) => {
-    return await columnCollectionSchema.validateAsync(data, { abortEarly: false });
+    return await columnCollectionSchema.validateAsync(data, { abortEarly: false })
 }
 
 const createNew = async (data) => {
@@ -32,9 +32,9 @@ const createNew = async (data) => {
 }
 
 /**
- * 
- * @param {string} columnId 
- * @param {string} cardId 
+ *
+ * @param {string} columnId
+ * @param {string} cardId
  */
 const pushCardOrder = async (columnId, cardId) => {
     try {
