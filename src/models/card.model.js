@@ -15,7 +15,7 @@ const cardCollectionSchema = Joi.object({
 })
 
 const validateSchema = async (data) => {
-    return await cardCollectionSchema.validateAsync(data, { abortEarly: false });
+    return await cardCollectionSchema.validateAsync(data, { abortEarly: false })
 }
 
 const createNew = async (data) => {
