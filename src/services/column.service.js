@@ -1,11 +1,13 @@
 import { ColumnModel } from '*/models/column.model'
 import { BoardModel } from '*/models/board.model'
+import { CardModel } from '*/models/card.model'
 
 const createNew = async (data) => {
     try {
         const createdColumn = await ColumnModel.createNew(data)
         // Update columnOrder in board collection
         const newColumn = await ColumnModel.findOneById(createdColumn.insertedId)
+        newColumn.cards = []
         await BoardModel.pushColumnOrder(newColumn.boardId.toString(), newColumn._id.toString())
         return newColumn
     } catch (error) {
@@ -19,8 +21,17 @@ const update = async (id, data) => {
             ...data,
             updatedAt: Date.now()
         }
-        const result = await ColumnModel.update(id, updateData)
-        return result
+
+        if (updateData._id) delete updateData._id
+        if (updateData.cards) delete updateData.cards
+
+        const updatedColumn = await ColumnModel.update(id, updateData)
+
+        if (updatedColumn._destroy) {
+            // delete all the cards in this column
+            CardModel.deleteMany(updatedColumn.cardOrder)
+        }
+        return updatedColumn
     } catch (error) {
         throw new Error(error)
     }

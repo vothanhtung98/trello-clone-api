@@ -42,8 +42,29 @@ const findOneById = async (id) => {
     }
 }
 
+/**
+ *
+ * @param {Array of string card id} ids
+ */
+const deleteMany = async (ids) => {
+    try {
+        // transfrom id in ids from string to ObjectId
+        const transfromIds = ids.map(i => ObjectId(i))
+
+        const result = await getDB().collection(cardCollectionName).updateMany(
+            { _id: { $in: transfromIds } },
+            { $set: { _destroy: true } }
+        )
+
+        return result
+    } catch (err) {
+        throw new Error(err)
+    }
+}
+
 export const CardModel = {
     cardCollectionName,
     createNew,
-    findOneById
+    findOneById,
+    deleteMany
 }

@@ -38,7 +38,7 @@ const pushColumnOrder = async (boardId, columnId) => {
         const result = await getDB().collection(boardCollectionName).findOneAndUpdate(
             { _id: ObjectId(boardId) },
             { $push: { columnOrder: columnId } },
-            { returnOriginal: false }
+            { returnDocument: 'after' }
         )
         return result.value
     } catch (err) {
@@ -51,7 +51,8 @@ const getFullBoard = async (boardId) => {
         const result = await getDB().collection(boardCollectionName).aggregate([
             {
                 $match: {
-                    _id: ObjectId(boardId)
+                    _id: ObjectId(boardId),
+                    _destroy: false
                 }
             },
             // Use $addFields to convert _id from ObjectId to String for lookup
