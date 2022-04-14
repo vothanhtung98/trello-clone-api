@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 import { env } from '*/config/environment'
 
-let dbInstance = null;
+let dbInstance = null
 
 export const connectDB = async () => {
     const client = new MongoClient(env.MONGODB_URI, {
@@ -12,7 +12,7 @@ export const connectDB = async () => {
     await client.connect()
 
     // Assign clientDB to our DBInstance
-    dbInstance = client.db(env.DATABASE_NAME);
+    dbInstance = client.db(env.DATABASE_NAME)
 }
 
 // Get Database Instance
