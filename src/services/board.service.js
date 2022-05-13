@@ -24,7 +24,7 @@ const getFullBoard = async (boardId) => {
 
         // Move card to right column
         transformBoard.columns.forEach(column =>
-            column.cards = transformBoard.cards.filter(card => card.columnId.toString() === column._id.toString())
+            column.cards = transformBoard.cards.filter(card => card.columnId.toString() === column._id.toString() && !card._destroy)
         )
         // Remove cards data after move to column
         delete transformBoard.cards
